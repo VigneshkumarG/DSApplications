@@ -31,31 +31,37 @@ public class Stack<Element>: CustomStringConvertible
     }
 }
 
-class BraceValidator
+class BracketsValidator
 {
     func validate(input: String) -> Bool  {
         
+        // 1. Create Stack of Character
         let stack = Stack<Character>()
         
+        // 2. Iterate each character
         for char in input {
-            if char == ")" {
+            
+            // 3. Push character to stack if it is open bracket
+            if char == "{" {
+                stack.push(element: char)
+            }else if char == "}" {
+                // 4. Pop until reach any open bracket
                 var top = stack.pop()
-                while top != nil && top != "(" {
+                while top != nil && top != "{" {
                     top = stack.pop()
                 }
+                // 5. if there is no open bracket in stack, it is invalid
                 if top == nil {
                     return false
                 }
-            }else{
-                stack.push(element: char)
             }
         }
-        
+        // 6. if there is no open brackets in stack, it is valid
         return stack.count == 0
     }
 }
 
-let validator = BraceValidator()
-validator.validate(input: "(a(bc))")
-validator.validate(input: ")()")
+let validator = BracketsValidator()
+validator.validate(input: "{{}}")
+validator.validate(input: "{}{{}")
 
